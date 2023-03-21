@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=DM+Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Request Project Quote</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Get a project quote</h1>
+            <p>Please fill the form below to receive a quote for your project. Feel free to add as much detail as needed.</p>
+        </header>
+        <div id="root" class="box">
+            <!-- <nav>
+                <div class="step done">1</div>
+                <div class="bar"><div class="half" style="width: 50%;"></div></span></div>
+                <div class="step">2</div>
+                <div class="bar"></div>
+                <div class="step">3</div>
+                <div class="bar"></div>
+                <div class="step">4</div>
+            </nav>
+            <div class="box-title">
+                <h2>Contact details</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisc.</p>
+            </div>
+            <div class="box-content">
+                <div class="item">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" placeholder="Name">     
+                    <div class="eror-msg">Company is required</div>     
+                </div>
+                <div class="item">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" placeholder="Email">     
+                    <div class="eror-msg">Company is required</div>     
+                </div>
+                <div class="item">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" name="phone" placeholder="Phone Number">     
+                    <div class="eror-msg">Company is required</div>     
+                </div>
+                <div class="item">
+                    <label for="company">Company</label>
+                    <input type="text" name="company" placeholder="Company">
+                    <div class="eror-msg">Company is required</div>     
+                </div>
+            </div> -->
+        </div>
+        <div class="pagenav">
+            <button class="prev">Previous step</button>
+            <button class="next">Next step</button>
+        </div>
+    </div>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" ></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" ></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" ></script>
+    <script type="text/babel">
+        const root = document.querySelector('#root');
+
+
+        
+
+        function StepBox(e){
+            function bar(step,page){
+                return(
+                    <div className={step<page?"bar done":"bar"}>
+                        <div className={step===page?"half":""}></div>
+                    </div>
+                )
+            }
+            const step = [1,2,3];
+            let stepBox=step.map(step=>
+                <>
+                {bar(step, e.page)}
+                <div className={step<e.page?"step done":"step"}>{step+1}</div>
+                </>
+            )
+            return(
+                <nav>
+                <div className="step done">1</div>
+                {stepBox}
+                </nav>
+            )
+        }
+
+        function BoxContent(e){
+            return (boxContact(e))
+        }
+        function TextInput(e){
+            const setData=e.setData;
+            const id=e.id;
+            function onTextChange(e){
+                setData((prev) =>{
+                        return {...prev, [id]: e.target.value}
+                    })
+            }
+            return(
+                <div className={e.error.length>0?'item error':'item'}>
+                    <label for={e.id} >{e.label}</label>
+                    <input 
+                        type="text" 
+                        name={id} 
+                        id={e.id}
+                        placeholder={e.label} 
+                        value={e.data[e.id]}
+                        ref={e.ref}
+                        onChange={onTextChange} 
+                    />     
+                    <div className="eror-msg">{e.error}</div>  
+                </div>
+            )
+
+        }
+
+        function boxContact(e){
+            return(
+                <>
+                <div className="box-title">
+                    <h2>Contact details</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisc.</p>
+                </div>
+                <div className="box-content">
+                    <TextInput 
+                        id="name"
+                        label="Name"
+                        data={e.data}
+                        setData={e.setData}
+                        error={e.error.name}
+                    />
+                    <TextInput 
+                        id="email"
+                        label="Email"
+                        data={e.data}
+                        setData={e.setData}
+                        error={e.error.email}
+                    />
+                    <TextInput 
+                        id="phone"
+                        label="Phone Number"
+                        data={e.data}
+                        setData={e.setData}
+                        error={e.error.phone}
+                    />
+                    <TextInput 
+                        id="company"
+                        label="Company"
+                        data={e.data}
+                        setData={e.setData}
+                        error={e.error.company}
+                    />
+                </div>
+                </>
+            )
+        }
+
+
+        function Container(page,nextButton,prevButton,children){
+            return(
+                <>
+                <header>
+                    <h1>Get a project quote</h1>
+                    <p>Please fill the form below to receive a quote for your project. Feel free to add as much detail as needed.</p>
+                </header>
+                <div class="box">
+                   
+                </div>
+                <div class="pagenav">
+                    <button class="prev">Previous step</button>
+                    <button class="next">Next step</button>
+                </div>
+                </>
+            )
+        }
+
+
+
+
+        function App(){
+            const [page, setPage] = React.useState(1);
+            const [data, setData] =React.useState({
+                name:'',
+                email:'',
+                phone:'',
+                company:'',
+                service:'Development',
+                budget:'$50.000 +'
+            });
+
+            const [error, setError] =React.useState({
+                name:"",
+                email:"",
+                phone:"",
+                company:"",
+            });
+
+            function emailCheck(e) {
+            const pattern = /[A-Za-z0-9\.]{6,30}\@gmail\.com$/
+            return pattern.test(e);
+        };
+        
+        function phoneCheck(e){
+            const pattern = /08[0-9]{6,10}$/ 
+            return pattern.test(e);
+        };
+
+            function isValidContact(e){
+                const te = {};
+                if(e.name==''){te.name='Name is required'} else {te.name=''};
+                if(e.email==''){te.email='Email is required'} else if(emailCheck(e.email)){te.email=''} else {te.email = 'Email is invalid'};
+                if(e.phone==''){te.phone='Phone Number is required'} else if(phoneCheck(e.phone)){te.phone=''} else {te.phone = 'Phone Number is invalid'};
+                if(e.company==''){te.company='Company is required'} else {te.company=''};
+                if(te.name||te.email||te.phone||te.company){te.status=true} else {te.status=false};
+                return te;
+            }
+
+            function nextButton(){
+                setError(isValidContact(data));
+                if(page>1||isValidContact(data).status==false){setPage(page+1)};
+            }
+
+            function prevButton(){
+                setPage(page-1);
+            }
+
+
+
+            return (
+                <div >
+                    <StepBox page={page} />
+                    <BoxContent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                        page={page}
+                        data={data}
+                        setData={setData}
+                        error={error}
+                        setError={setError}
+                    />
+                </div>
+            )
+        };
+
+        ReactDOM.render(<App />,root)
+    </script>
+</body>
+</html>
