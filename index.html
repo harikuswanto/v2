@@ -5,52 +5,8 @@
     <title>Request Project Quote</title>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Get a project quote</h1>
-            <p>Please fill the form below to receive a quote for your project. Feel free to add as much detail as needed.</p>
-        </header>
-        <div id="root" class="box">
-            <!-- <nav>
-                <div class="step done">1</div>
-                <div class="bar"><div class="half" style="width: 50%;"></div></span></div>
-                <div class="step">2</div>
-                <div class="bar"></div>
-                <div class="step">3</div>
-                <div class="bar"></div>
-                <div class="step">4</div>
-            </nav>
-            <div class="box-title">
-                <h2>Contact details</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisc.</p>
-            </div>
-            <div class="box-content">
-                <div class="item">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" placeholder="Name">     
-                    <div class="eror-msg">Company is required</div>     
-                </div>
-                <div class="item">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" placeholder="Email">     
-                    <div class="eror-msg">Company is required</div>     
-                </div>
-                <div class="item">
-                    <label for="phone">Phone Number</label>
-                    <input type="text" name="phone" placeholder="Phone Number">     
-                    <div class="eror-msg">Company is required</div>     
-                </div>
-                <div class="item">
-                    <label for="company">Company</label>
-                    <input type="text" name="company" placeholder="Company">
-                    <div class="eror-msg">Company is required</div>     
-                </div>
-            </div> -->
-        </div>
-        <div class="pagenav">
-            <button class="prev">Previous step</button>
-            <button class="next">Next step</button>
-        </div>
+    <div id="root" class="container">
+        
     </div>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js" ></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" ></script>
@@ -58,8 +14,7 @@
     <script type="text/babel">
         const root = document.querySelector('#root');
 
-
-        
+       
 
         function StepBox(e){
             function bar(step,page){
@@ -85,7 +40,7 @@
         }
 
         function BoxContent(e){
-            return (boxContact(e))
+            return (boxContact(e));
         }
         function TextInput(e){
             const setData=e.setData;
@@ -104,7 +59,7 @@
                         id={e.id}
                         placeholder={e.label} 
                         value={e.data[e.id]}
-                        ref={e.ref}
+                        ref={e.reff}
                         onChange={onTextChange} 
                     />     
                     <div className="eror-msg">{e.error}</div>  
@@ -127,27 +82,31 @@
                         data={e.data}
                         setData={e.setData}
                         error={e.error.name}
-                    />
+                        reff={e.rep.name}
+                        />
                     <TextInput 
                         id="email"
                         label="Email"
                         data={e.data}
                         setData={e.setData}
                         error={e.error.email}
-                    />
+                        reff={e.rep.email}
+                        />
                     <TextInput 
                         id="phone"
                         label="Phone Number"
                         data={e.data}
                         setData={e.setData}
                         error={e.error.phone}
-                    />
+                        reff={e.rep.phone}
+                        />
                     <TextInput 
                         id="company"
                         label="Company"
                         data={e.data}
                         setData={e.setData}
                         error={e.error.company}
+                        reff={e.rep.company}
                     />
                 </div>
                 </>
@@ -155,7 +114,7 @@
         }
 
 
-        function Container(page,nextButton,prevButton,children){
+        function Container(e){
             return(
                 <>
                 <header>
@@ -163,11 +122,11 @@
                     <p>Please fill the form below to receive a quote for your project. Feel free to add as much detail as needed.</p>
                 </header>
                 <div class="box">
-                   
+                   {e.children}
                 </div>
                 <div class="pagenav">
-                    <button class="prev">Previous step</button>
-                    <button class="next">Next step</button>
+                    <button class="prev" onClick={e.onPrev}>Previous step</button>
+                    <button class="next" onClick={e.onNext}>Next step</button>
                 </div>
                 </>
             )
@@ -193,6 +152,25 @@
                 phone:"",
                 company:"",
             });
+
+            const nameRef = React.useRef(null);
+            const emailRef = React.useRef(null);
+            const phoneRef = React.useRef(null);
+            const companyRef = React.useRef(null);
+            const ref = {
+                name:nameRef,
+                email:emailRef,
+                phone:phoneRef,
+                company:companyRef
+                }
+                
+            React.useEffect(() => {
+                if(error.name.length>0){nameRef.current.focus()} else
+                if(error.email.length>0){emailRef.current.focus()} else
+                if(error.phone.length>0){phoneRef.current.focus()} else
+                if(error.company.length>0){companyRef.current.focus()}
+            }, [error]);
+
 
             function emailCheck(e) {
             const pattern = /[A-Za-z0-9\.]{6,30}\@gmail\.com$/
@@ -224,9 +202,11 @@
             }
 
 
-
             return (
-                <div >
+                <Container 
+                    onNext={nextButton}
+                    onPrev={prevButton}
+                >
                     <StepBox page={page} />
                     <BoxContent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                         page={page}
@@ -234,8 +214,9 @@
                         setData={setData}
                         error={error}
                         setError={setError}
+                        rep={ref}
                     />
-                </div>
+                </Container>
             )
         };
 
