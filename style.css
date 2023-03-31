@@ -212,14 +212,14 @@ label{
 }
 
 
-.item,.layanan,.grup-harga{
+.item,.service,.budget{
     width: 280px;
     height: 115px;
     box-sizing: border-box;
     padding: 10px;
 }
 
-.layanan,.grup-harga{
+.service,.budget{
     display: flex;
     align-items: center;
     border: 1px solid #EFF0F7;
@@ -228,7 +228,7 @@ label{
     cursor: pointer;
 }
 
-.icon-layanan{
+.icon-service{
     width: 70px;
     height: 70px;
     background: rgba(74, 58, 255,.15);
@@ -239,7 +239,7 @@ label{
 }
 
 
-.nama-layanan, .harga{
+.nama-service, .nama-budget{
     font-weight: 700;
     margin: 10px;
     font-size: 20px;
